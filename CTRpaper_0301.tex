@@ -1,0 +1,427 @@
+\documentclass[compress,10pt]{beamer}
+\mode<presentation>
+\usefonttheme[onlymath]{serif}
+\usetheme{Boadilla}
+\setbeamerfont{caption}{size=\scriptsize}
+\usepackage{cases}
+\usepackage{xcolor}
+\definecolor{tsinghua}{RGB}{130,49,142}
+\setbeamercolor{bgcolor}{fg=white,bg=blue}
+\setlength\abovecaptionskip{-2pt}
+\usepackage{tikz}
+\usepackage{pgflibrarysnakes}
+\usepackage{pgflibraryarrows}
+\usepackage{graphicx}
+\usetikzlibrary{calc}
+%\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{frametitle}[default][center]
+\addtobeamertemplate{frametitle}{\vskip+1ex}{}
+\setbeamercolor{frametitle}{fg=tsinghua}
+\setbeamerfont{frametitle}{size=\Large}
+
+\setbeamertemplate{background}{%
+\begin{tikzpicture}[overlay,remember picture]
+  \draw [color=black,inner color=white, outer color=white, line width=.3mm,rounded corners]
+    ($ (current page.north west) + (0.2cm,-0.2cm) $)
+    rectangle
+    ($ (current page.south east) + (-0.2cm,0.35cm) $);
+\end{tikzpicture}%
+}
+
+
+\usepackage{eso-pic}
+\newcommand\AtPagemyUpperLeft[1]{\AtPageLowerLeft{%
+\put(\LenToUnit{0.9\paperwidth},\LenToUnit{0.86\paperheight}){#1}}}
+\AddToShipoutPictureFG{
+  \AtPagemyUpperLeft{{\includegraphics[width=1cm]{logo-eps-converted-to}}}
+}
+
+\makeatletter
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+    \usebeamerfont{author in head/foot}\insertshortauthor%~~\beamer@ifempty{\insertshortinstitute}{}{(\insertshortinstitute)}
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+    \usebeamerfont{title in head/foot}\insertshorttitle
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+    \usebeamerfont{date in head/foot}\insertshortdate{}\hspace*{2em}
+    \insertframenumber{} / \inserttotalframenumber\hspace*{2ex} 
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+\makeatother
+
+\makeatletter
+\setbeamertemplate{frametitle}
+{
+  \ifbeamercolorempty[bg]{frametitle}{}{\nointerlineskip}%
+  \@tempdima=.9\textwidth%
+  \advance\@tempdima by\beamer@leftmargin%
+  \advance\@tempdima by\beamer@rightmargin%
+  \begin{beamercolorbox}[sep=0.5cm,center,wd=\the\@tempdima]{frametitle}
+    \vbox{}\vskip-.5ex%
+    \if@tempswa\else\csname beamer@fteleft\endcsname\fi%
+    {\strut\color{black}\bfseries\insertframetitle\strut\par%
+    {%
+      \ifx\insertframesubtitle\@empty%
+      \else%
+      {\usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}\insertframesubtitle\strut\par}%
+      \fi
+    }%
+    \vskip-1.5ex%
+    \rule{\dimexpr\paperwidth-2cm\relax}{0.4pt}}
+    \if@tempswa\else\vskip-.3cm\fi% set inside beamercolorbox... evil here...
+  \end{beamercolorbox}%
+    %
+}
+\makeatother
+
+
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{colortbl}
+%\usepackage{itemize}
+\tcbuselibrary{skins}
+
+\newcolumntype{Y}{>{\raggedleft\arraybackslash}X}
+
+\tcbset{tab1/.style={fonttitle=\bfseries\large,fontupper=\normalsize\sffamily,
+colback=yellow!10!white,colframe=red!75!black,colbacktitle=red!40!white,
+coltitle=black,center title,freelance,frame code={
+\foreach \n in {north east,north west,south east,south west}
+{\path [fill=red!75!black] (interior.\n) circle (3mm); };},}}
+
+\tcbset{tab2/.style={enhanced,fonttitle=\bfseries,fontupper=\normalsize\sffamily,
+colback=blue!10!white,colframe=red!50!black,colbacktitle=red!40!white,
+coltitle=black,center title}}
+
+
+
+    \setbeamersize{
+      text margin left=3em,
+      text margin right=3em
+    }
+
+\newcommand{\ft}{\frametitle}
+
+\let\oldfootnotesize\footnotesize
+\renewcommand*{\footnotesize}{\oldfootnotesize\tiny}
+
+\usepackage{bm}
+
+\usepackage{xeCJK}
+\setCJKmainfont[BoldFont=Weibei-SC-Bold, ItalicFont=STKaiti]{STSong}
+\setCJKsansfont[BoldFont=STHeiti]{STXihei}
+\setCJKmonofont{STFangsong}
+
+\title[Recommender System]{Collaborative Topic Modeling for Recommending Scientific Articles}
+\author{刘畅}
+\date{2017-03}
+\institute{清华大学}
+\begin{document}
+\frame{
+	\begin{center}
+		{\bf\large{推荐系统文章整理 }}
+		\par
+		\vspace{40pt}
+		{\bf\large\underline{Collaborative Topic Modeling }}
+		{\bf\large\underline{ for Recommending Scientific Articles}}
+		\vspace{40pt}
+		\par Wang C, Blei D M. Collaborative topic modeling for recommending scientific articles[C]//Proceedings of the 17th ACM SIGKDD international conference on Knowledge discovery and data mining. ACM, 2011: 448-456.
+	\vspace{20pt}
+	\end{center}
+}
+
+\section{背景}
+\frame{
+	\ft{推荐系统的两类任务}
+	
+	\begin{itemize}
+		\item In-matrix预测$\>$ Figure$～$a这种每篇文章至少被一个用户评价过的预测问题
+		\item Out-matrix预测$\>$ Figure$～$b 像4、5这种每篇文章从未被别人评价过的预测问题，存在冷启动问题，通常的协同过滤算法无法处理
+	\end{itemize}
+
+	\begin{figure}
+		\centering
+		\includegraphics[width=.8\textwidth]{./fig/figure1.png}
+		\caption{两种推荐系统问题的图示，$\surd$表示喜欢，$\times$表示不喜欢，？表示未被评分}
+	\end{figure}
+}	
+
+\frame{
+	\ft{矩阵分解方法做推荐}
+	\begin{block}
+		{变量定义及损失函数}
+	\end{block}
+	\begin{itemize}
+		\vspace{10pt}
+		\item 用低维空间来表示用户、物品隐向量$u_i,v_j$，用户评分可以表示为
+		\par $\hat r _{ij}=u_i^Tv_j$
+		\vspace{10pt}
+		\item 于是可以转化为优化问题：最小化带正则的损失平方，如下式：
+		\vspace{10pt}
+		\par $min_{U,V}\sum_{i,j}(r_{ij}-u_i^Tv_j)^2+\lambda_u\left \| {u_i} \right \|^2+\lambda_v\left \| {v_j} \right \|^2$
+		\vspace{10pt}
+		\par\centering 其中$U=(u_i)_{i=1}^I$和$V=(u_j)_{j=1}^J$
+		\vspace{10pt}
+	\end{itemize}
+}
+
+\frame{
+	\ft{矩阵分解方法做推荐}
+	\begin{block}
+		{probabilistic matrix factorization(PMF)}
+	\end{block}
+
+	\par 可以假设如下生成过程：
+	\begin{itemize}
+		\item 对于每个用户i，用户i隐变量$u_i~\sim~N(0,\lambda_u^{-1}I_K)$
+		\vspace{10pt}
+		\item 对于每个物品j，物品j隐变量$v_j~\sim~N(0,\lambda_v^{-1}I_K)$
+		\vspace{10pt}
+		\item 对于每个用户物品对(i,j)，评分$r_{ij}~\sim~N(u^T_iv_j,c_{ij}^{-1})$
+		其中$c_{ij}$是针对$r_{ij}$的参数，定义如下：
+		\begin{equation}\nonumber{c_{ij}=}
+		\begin{cases}
+		a,~~~~~~~~~        if  ~~ r_{ij}  =1\\
+		b, ~~~~~~~~~    if ~~ r_{ij}  =0
+		\end{cases}
+		\end{equation}
+		\item 具体理解参考：
+		\par http://blog.csdn.net/shenxiaolu1984/article/details/50372909	
+	\end{itemize}
+}
+
+
+\frame{
+	\ft{概率主题模型}
+	\begin{block}
+		{隐狄利克雷模型（文档主题模型）}
+	\end{block}
+
+	\par 隐狄利克雷模型生成过程：（注意：下列参数均为向量）
+	\begin{itemize}
+		\item 1、对于每篇文章$w_j$，从参数为$\alpha$（参数预先给定）的狄利克雷分布得到主题参数，即:
+		\par$\theta_j ~\sim ~Dirichlet(\alpha)$
+		\vspace{10pt}
+		\item 2、对于每个单词n
+		\par(a) ~从参数为$\theta_j$的多项分布得到词的主题，即：
+		\par$z_{jn}~\sim~Mult(\theta_j)$
+		\vspace{10pt}
+		\par(b) ~从参数为 $\beta_{z_{jn}}$（$\beta$参数对应刚得到的主题）的狄利克雷分布得到单词分布参数，并由该参数通过多项分布生成最终单词，即：
+		$w_{jn}\sim Mult(Dirichlet(\beta_{z_{jn}}))$
+		\vspace{10pt}
+		\item 3、具体理解参考：http://blog.csdn.net/yhao2014/article/details/51098037	
+	\end{itemize}
+}
+
+
+\section{本文方法}
+\frame{
+	\ft{协同主题回归}
+	
+	\begin{block}
+		{模型布局}
+	\end{block}
+
+	\begin{itemize}
+		\item $\alpha$为主题先验参数，生成$\theta$主题后验参数，生成对应主题z，然后根据$\beta_z$作为单词先验参数生成单词后验参数，最终生成单词（分布对应LDA）
+		\item 由主题后验参数$\theta$加入干扰项$\varepsilon$得到隐物品向量v，和隐用户向量u得到评分r
+	\end{itemize}
+	\begin{figure}
+		\centering
+		\includegraphics[width=.6\textwidth]{./fig/figure2.png}
+		\caption{CTR模型的图示}
+	\end{figure}
+}
+
+\frame{
+	\ft{协同主题回归}
+	\begin{block}
+		{模型生成过程}
+	\end{block}
+	假设有K个主题，主题先验参数$\beta$=$\beta_{1:K}$
+	\begin{itemize}
+		\item 1、对于每个用户i，用户i隐变量$u_i~\sim~N(0,\lambda_u^{-1}I_K)$
+		\item 2、对于每个物品j,
+		\par (a)主题后验参数 $\theta_j ~\sim ~Dirichlet(\alpha)$
+		\par (b)物品偏移量$\varepsilon~\sim~N(0,\lambda_v^{-1}I_K)$，并得到隐物品向量$v_j=\varepsilon_j+\theta_j$，这个偏离量指文章内容以外的用户造成的影响
+		\par (c)对于每个单词$w_{jn}$
+		\par 生成主题$z_{jn}~\sim~Mult(\theta_j)$，单词$w_{jn}\sim Mult(Dirichlet(\beta_{z_{jn}}))$
+		\item 3、对于每个用户物品对(i,j)，评分$r_{ij}~\sim~N(u^T_iv_j,c_{ij}^{-1})$
+		\par 协同主题回归模型的解释
+		\par $E[r_{ij}|u_i,\theta_j,\varepsilon_j]=u_i^T(\theta_j+\varepsilon_j)$
+	\end{itemize}
+}
+
+\frame{
+	\ft{协同主题回归}
+	\begin{block}
+		{参数学习-E步}
+	\end{block}
+	
+	\begin{itemize}
+		\item 采用EM算法，E步优化$u_i,v_j,\theta_j$，M步优化 $\beta$
+		\item 最大化似然函数，优化U，V，$\theta_{1:J}$和R，给定$\lambda_u,\lambda_v,\beta$，损失函数如下
+		\par $L=-\frac{\lambda_u}{2}\sum_i{u_i^Tu_i}-\frac{\lambda_v}{2}\sum_j{(v_j-\theta_j)^T(v_j-\theta_j)}$
+		\par +$\sum_j{\sum_n{log(\sum_k{\theta_{jk}\beta_{k,w_{jn}}})}}-\sum_{i,j}\frac{c_{ij}}{2}(r_{ij}-u_i^Tv_j)^2$
+		\item 通过使偏导为0优化$u_i,v_j$
+		\par $u_i~\to~(VC_iV^T+\lambda_uI_K)^{-1}VC_iR_i$
+		\par $v_j~\to~(UC_jU^T+\lambda_vI_K)^{-1}(UC_jR_j+\lambda_v\theta_j)$
+		\item 定义$q(z_{jn}=k)=\phi_{jnk}$，然后分离含有$\theta_j$项的，并用Jensen不等式
+		\par L($\theta_j,\phi_j$)=$-\frac{\lambda_v}{2}\sum_j{(v_j-\theta_j)^T(v_j-\theta_j)}$
+		\par + $\sum_n{\sum_k{\phi_{jnk}(log\theta_{jk}\beta_{k,w_{jn}}-log\phi_{jnk})}}$
+		\par 最优的$\phi_{jnk}$服从$\phi_{jnk}\varpropto \theta_{jk}\beta_{k,w_{jn}}$，文中使用投影梯度优化$\theta_j$
+	\end{itemize}
+}
+
+\frame{
+	\ft{协同主题回归}
+	\begin{block}
+		{参数学习-M步}
+	\end{block}
+	
+	\begin{itemize}
+		\item 使用E步得到的U、V和$\phi$，优化$\beta$过程，与LDA模型中一致，即$\beta~\varpropto~\sum_j{\sum_n{\phi_{jnk}1[w_{jn}=w]}}$
+	\end{itemize}
+	\begin{block}
+		{预测}
+	\end{block}
+	\begin{itemize}
+	\item D作为观测到的数据，总体预测可以估计为：
+	$E[r_{ij}|D]\approx E[u_i|D]^T(E[\theta_j|D]+E[\varepsilon_j|D])$
+	\vspace{10pt}
+	\item in-matrix问题，$r_{ij}^*\approx(u_i^*)^T(\theta_j^*+\varepsilon_j^*)=(u_i^*)^Tv_j^*$
+	\vspace{10pt}
+	\item out-matrix问题，$r_{ij}^*\approx(u_i^*)^T\theta_j^*$
+	\end{itemize}
+}
+
+\section{结果分析}
+\frame{
+	\ft{评估方法}
+	\begin{itemize}
+		\item 评估公式
+		\par recall@M = $\frac{number～of～articles～the～user～like～in～top M}{total～number～of～article～the～user~likes}$
+		\item in-matrix 预测
+		\par 5倍交叉验证，每篇文章至少出现5次平均分配到每组中，少于5次的放入训练集
+		\item out-of-matrix 预测
+		\par 5倍交叉验证，平均分配，测试集测试其中从未出现在训练集中的文章即可
+	\end{itemize}
+
+	\begin{figure}
+		\centering
+		\includegraphics[width=.5\textwidth]{./fig/figure3.png}
+		\caption{对比LDA、CF、CTR在两种预测问题的召回率}
+	\end{figure}
+}
+
+\frame{
+	\ft{评估$\lambda_v$参数影响}
+	\begin{itemize}
+		\item $\lambda_v$的影响
+		\par $\lambda_v$小的时候内容影响小，CTR贴近CF，$\lambda_v$大的时候内容影响大，CTR贴近LDA
+	\end{itemize}
+
+	\begin{figure}
+		\centering
+		\includegraphics[width=.8\textwidth]{./fig/figure6.png}
+		\caption{在不同$\lambda_v$下，CTR与LDA、CF召回率对比}
+	\end{figure}
+}
+
+\frame{
+	\ft{评估用户的召回率与其收藏文章数量关系}
+	
+	\begin{figure}
+		\centering
+		\includegraphics[width=.8\textwidth]{./fig/figure4.png}
+		\caption{一个用户收藏文章数量与召回率的散点图}
+	\end{figure}
+
+	\begin{itemize}
+	\item 两种问题预测结果都表明，有更多文章的用户预测召回率方差较小，文章少的用户容易产生评分的极值0或1
+	\item 文章很多的用户召回率有降低趋势，因为多阅读量的用户容易有不常见的文章，相对难以预测
+	\end{itemize}
+}
+\frame{
+	\ft{评估文章的召回率与被收藏用户数量关系}
+	
+
+	\begin{figure}
+		\centering
+		\includegraphics[width=.8\textwidth]{./fig/figure5.png}
+		\caption{一篇文章被收藏的用户数量与召回率的散点图}
+	\end{figure}
+	
+	\begin{itemize}
+		\item 在in-matrix问题中，有更多用户的文章容易有更高的召回率，信息更多，更容易预测，在LDA方法中这个效应弱一些，因为其不用用户评分信息
+		\item 在out-matrix问题中，由于都是新文章，提取不到用户信息，所以就没有上述效应
+	\end{itemize}
+}
+
+\frame{
+	\ft{用户画像}
+	\begin{itemize}
+		\item 通过CTR方法得到两个用户的偏好主题与推荐文章(通过隐向量$u_i$)
+		
+	\end{itemize}
+	\begin{figure}
+		\centering
+		\includegraphics[width=1.0\textwidth]{./fig/figure7.png}
+	\end{figure}
+
+}
+
+
+\frame{
+	\ft{文章的隐空间(偏离向量$\varepsilon$的影响)}
+	
+	\begin{figure}
+		\centering
+		\includegraphics[width=1.0\textwidth]{./fig/figure8.png}
+	\end{figure}
+
+	\begin{itemize}
+		\item 偏离向量$\varepsilon_j^T\varepsilon_j=(v_j-\theta_j)^T(v_j-\theta_j)$，上表表示最大偏离量的10篇文章的概况和预测情况
+		\item 表格第二三列为文章出现在数据中次数及Google Scholar中引用次数
+		\item 这些偏移量大的往往引用量很高，是很大众化文章，这些文章常被不同领域人阅读
+		\item 后两列表示喜欢和不喜欢的平均预测评分
+	\end{itemize}
+}
+
+\frame{
+	\ft{文章的隐空间(偏离向量$\varepsilon$的影响)}
+	
+	\begin{figure}
+		\centering
+		\includegraphics[width=1.0\textwidth]{./fig/figure9.png}
+		\caption{主题参数分布图}
+		%\caption{ 肿瘤分子异质性的四种类型 {\cc\scriptsize (Vogelstein et al.,{\it Science},2013)} }
+	\end{figure}
+	
+	\begin{itemize}
+		\item 左图表示偏移量大且很受普遍关注的文章，偏移量来自众多读者的偏好，隐向量会多出很多文本本身以外的主题。
+		\item 右图表示不那么受普遍关注的文章也可以有较大偏移，但由于读者少，主要主题不会变，偏移量调整隐向量，一般不会推荐给文章主题爱好以外的用户
+	\end{itemize}
+}
+
+\section{总结}
+\frame{
+	\ft{总结与展望}
+	
+	\begin{itemize}
+		\item 这篇文章整合矩阵分解方法和LDA主题模型预测推荐，后者预测物品隐向量
+		\item 引入偏移量更好衡量内容的隐向量与该文章的隐向量，从而反映用户影响
+		\item 作为一个传统方法，测试其他方法做baseline
+		\item LDA表示文章主题仍有不足，所以后续引入深度学习来搞这个，参考CDL这篇文章(Wang H, Wang N, Yeung D Y. Collaborative deep learning for recommender systems[C]//Proceedings of the 21th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining. ACM, 2015: 1235-1244.)
+	\end{itemize}
+}
+
+\end{document}
